@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/guard")
 public class VisitController {
@@ -16,7 +18,7 @@ public class VisitController {
     VisitService visitService;
 
     @GetMapping("/visitor/{phoneNumber}")
-    public ExtendedPersonFrontEnd getVisitByPhoneNumber(@PathVariable String phoneNumber) {
+    public List<ExtendedPersonFrontEnd> getVisitByPhoneNumber(@PathVariable String phoneNumber) {
         return visitService.getVisitByPhoneNumber(phoneNumber);
     }
 

@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 
-@Service
+//@Service
 public class VerifyListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(VerifyListener.class);
-
-    @Autowired
-    VisitService visitService;
-
-    @RabbitListener(queues = "${amqp.queue.name}")
-    public void receiveMessageForApp(final ExtendedPerson extendedPerson) throws ParseException {
-        LOGGER.info("Received message: {} from sender queue.", extendedPerson);
-        visitService.verifySave(extendedPerson);
-
-    }
+//    private static final Logger LOGGER = LoggerFactory.getLogger(VerifyListener.class);
+//
+//    @Autowired
+//    VisitService visitService;
+//
+//    @RabbitListener(queues = "${amqp.queue.name}")
+//    public void receiveMessageForApp(final ExtendedPerson extendedPerson) throws ParseException {
+//        LOGGER.info("Received message: {} from sender queue.", extendedPerson);
+//        visitService.verifySave(extendedPerson);
+//
+//    }
 }
