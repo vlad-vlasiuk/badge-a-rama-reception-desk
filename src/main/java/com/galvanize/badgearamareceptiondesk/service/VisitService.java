@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,7 @@ public class VisitService {
         if (visits.size() > 0)
             visitId = visits.get(0).getId();
 
-        visitRepository.save(Visit.builder()
+        Visit visit = Visit.builder()
                 .id(visitId)
                 .phoneNumber(extendedPerson.getPhoneNumber())
                 .hostName(extendedPerson.getHostName())
@@ -35,7 +36,31 @@ public class VisitService {
                 .active(true)
                 .registerDate(new Date())
                 .status(VisitStatus.UNVERIFIED)
-                .build());
+                .build();
+        visitRepository.save(visit);
+
+    }
+
+    public List<ExtendedPersonFrontEnd> getVisitByPhoneNumber(String phoneNumber) {
+        List<ExtendedPersonFrontEnd> result = new ArrayList<>();
+        if (phoneNumber == null)
+            throw new IllegalArgumentException();
+        Long phoneLong = Long.parseLong(phoneNumber.replaceAll("[^0-9]", ""));
+        List<Visit> allByPhoneNumber = visitRepository.findAllByPhoneNumber(phoneLong);
+        allByPhoneNumber.forEach(e->{
+            result.add(ExtendedPersonFrontEnd.builder()
+            .phoneNumber(Long.toString(e.getPhoneNumber()))
+                    .hostName(e.getHostName())
+                    .hostPhone(Long.toString(e.getHostPhoneNumber()))
+                    .active(e.getActive())
+                    .status(e.getStatus())
+                    .registerDate(e.getRegisterDate())
+                    .checkedInDate(e.getCheckedInDate())
+                    .checkedOutDate(e.getCheckedOutDate())
+                    .build());
+        });
+
+        return result;
 
     }
 }
