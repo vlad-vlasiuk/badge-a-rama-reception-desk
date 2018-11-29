@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Service
 public class VisitService {
@@ -47,9 +48,9 @@ public class VisitService {
             throw new IllegalArgumentException();
         Long phoneLong = Long.parseLong(phoneNumber.replaceAll("[^0-9]", ""));
         List<Visit> allByPhoneNumber = visitRepository.findAllByPhoneNumber(phoneLong);
-        allByPhoneNumber.forEach(e->{
+        allByPhoneNumber.forEach(e -> {
             result.add(ExtendedPersonFrontEnd.builder()
-            .phoneNumber(Long.toString(e.getPhoneNumber()))
+                    .phoneNumber(Long.toString(e.getPhoneNumber()))
                     .hostName(e.getHostName())
                     .hostPhone(Long.toString(e.getHostPhoneNumber()))
                     .active(e.getActive())
@@ -62,5 +63,19 @@ public class VisitService {
 
         return result;
 
+    }
+
+    public Iterable<ExtendedPersonFrontEnd> getAll() {
+        List<ExtendedPersonFrontEnd> result = new ArrayList<>();
+        StreamSupport.stream(visitRepository.findAll().spliterator(), false)
+                .forEach(e -> {
+                    result.add(
+                            ExtendedPersonFrontEnd.builder()
+                                    .hostName(e.getHostName())
+                                    .hostPhone(Long.toString(e.getHostPhoneNumber()))
+                                    .registerDate(e.getRegisterDate())
+                                    .build());
+                });
+        return result;
     }
 }

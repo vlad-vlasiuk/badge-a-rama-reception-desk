@@ -22,4 +22,9 @@ public class VisitController {
         return visitService.getVisitByPhoneNumber(phoneNumber);
     }
 
+    @GetMapping("/visits")
+    public Iterable<ExtendedPersonFrontEnd> getAll() {
+        return visitService.getAll();
+    }
+
 }
